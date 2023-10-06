@@ -16,8 +16,8 @@ int motorA1  = 10;
 int motorA2  = 11;  
 int motorB1  = 6;   
 int motorB2  = 9;   
-int motorC1  = 3;   
-int motorC2  = 5;   
+int motorC1  = 5;   
+int motorC2  = 3;   
 
 // ======================== LEDS ========================
 int ledR  = 12;  // Pin Motor Derecha Adelante
@@ -155,7 +155,7 @@ void AdelanteA(){
   analogWrite(motorA2, Speed); 
   analogWrite(motorB1, Speed); 
   analogWrite(motorB2, 255); 
-  analogWrite(motorC1, 235); 
+  analogWrite(motorC1, 255); 
   analogWrite(motorC2, Speed); 
 }
 void AtrasA(){
@@ -165,25 +165,25 @@ void AtrasA(){
   analogWrite(motorB1, 255); 
   analogWrite(motorB2, Speed); 
   analogWrite(motorC1, Speed);
-  analogWrite(motorC2, 235); 
+  analogWrite(motorC2, 255); 
 }
 void Right(){
   //Serial.println("Adelante");
-  analogWrite(motorA1, Speed);
-  analogWrite(motorA2, 200); 
-  analogWrite(motorB1, 255); 
+  analogWrite(motorA1, 255);
+  analogWrite(motorA2, Speed); 
+  analogWrite(motorB1, 200); 
   analogWrite(motorB2, Speed); 
-  analogWrite(motorC1, 255);
+  analogWrite(motorC1, 200);
   analogWrite(motorC2, Speed); 
 }
 void Left(){
   //Serial.println("Adelante");
-  analogWrite(motorA1, 200);
-  analogWrite(motorA2, Speed); 
+  analogWrite(motorA1, Speed);
+  analogWrite(motorA2, 255); 
   analogWrite(motorB1, Speed); 
-  analogWrite(motorB2, 255); 
+  analogWrite(motorB2, 200); 
   analogWrite(motorC1, Speed);
-  analogWrite(motorC2, 255); 
+  analogWrite(motorC2, 200); 
 }
 
 void Rotar1(){

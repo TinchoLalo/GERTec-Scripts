@@ -1,8 +1,8 @@
 // MOTORES
-int motorB1 = 6;
-int motorB2 = 7;
-int motorA1 = 8;
-int motorA2 = 9;
+int motorB1 = 5;
+int motorB2 = 6;
+int motorA1 = 7;
+int motorA2 = 8;
 
 int Low = 0;
 int Linea = 800;
@@ -42,22 +42,22 @@ void loop() {
 
 
   ///////////////// SEGUIR LINEA /////////////////
-  if (CLP>Linea){
+  if (CLP > Linea){
     Parar();
   }
   // Central
-  else if (v2 > Linea) {
+  else if (v2 < Linea) {
     Adelante(255, 180);
     State=1;
     delay(Delay);
   }
   // Laterales
-  else if (v4 > Linea){
+  else if (v4 < Linea){
     Adelante(180, 255);
     State=2;
     delay(Delay);
   }
-  else if (v1 > Linea){
+  else if (v1 < Linea){
     Atras(100, 220);
     delay(15);
     //Adelante(220, 100);
@@ -65,7 +65,7 @@ void loop() {
     delay(Delay);
   }
   // Puntas
-  else if (v5 > Linea){
+  else if (v5 < Linea){
     Atras(220, 100);
     delay(15);
     //Adelante(100, 220);
@@ -73,7 +73,7 @@ void loop() {
     delay(Delay);
   }
   else {
-    if (v3 > Linea || State == 0){
+    if (v3 < Linea || State == 0){
       Adelante(255, 255);
       State = 0;
     } 
