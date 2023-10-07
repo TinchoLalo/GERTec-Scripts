@@ -1,5 +1,4 @@
 #include <IRremote.hpp> 
-
 /*
   @Proyecto:    Robot Mini-Sumo
   @Autor:       Equipo GERTec
@@ -10,8 +9,8 @@
 //========================== MODOS ========================== 
 
 boolean Test = false;      // Indica el modo pruebas del código
-boolean Lucha   = false;   // Indica si el sumo ha sido activado para competir
-boolean TestMotor = false; 
+boolean Lucha   = !Test;   // Indica si el sumo ha sido activado para competir
+boolean TestMotor = true; 
 boolean TestIR = false;      // Indica el modo pruebas del código
 boolean linea   = false;
 
@@ -21,7 +20,7 @@ int senState = 0;
 int low = 100;
 
 // ========================== SENSORES SIGUE LINEAS  ==========================
-int sensorLinea  = 12;
+int sensorLinea  = 0;
 int valorLinea   = 0;
 int valor0 = 0; 
 
