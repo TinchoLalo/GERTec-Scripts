@@ -1,12 +1,12 @@
 // MOTORES
 int motorB1 = 5;
 int motorB2 = 6;
-int motorA1 = 7;
-int motorA2 = 8;
+int motorA1 = 10;
+int motorA2 = 11;
 
 int Low = 0;
 int Linea = 800;
-int Delay= 10;
+int Delay= 50;
 int State= 0;
 bool lineDetected = false;
 
@@ -40,51 +40,54 @@ void loop() {
   ReadSensors();
   //PrintValue();
 
-
   ///////////////// SEGUIR LINEA /////////////////
   if (CLP > Linea){
     Parar();
+    State=0;
   }
   // Central
-  else if (v2 < Linea) {
-    Adelante(255, 180);
-    State=1;
-    delay(Delay);
+  else if (v3 > Linea && State == 0) {
+    Adelante(90, 90);
+    //delay(Delay);
   }
   // Laterales
-  else if (v4 < Linea){
-    Adelante(180, 255);
-    State=2;
-    delay(Delay);
-  }
-  else if (v1 < Linea){
-    Atras(100, 220);
-    delay(15);
-    //Adelante(220, 100);
+    else if (v2 > Linea) {
+    Adelante(110, 80);
     State=1;
-    delay(Delay);
+    //delay(Delay);
+  }
+  else if (v4 > Linea){
+    Adelante(80, 110);
+    State=2;
+    //delay(Delay);
   }
   // Puntas
-  else if (v5 < Linea){
-    Atras(220, 100);
-    delay(15);
+  else if (v1 > Linea){
+    Atras2(110, 80);
+    //delay(50);
+    //Adelante(220, 100);
+    State=1;
+    
+  }
+  else if (v5 > Linea){
+    Atras(110, 80);
+    //delay(50);
     //Adelante(100, 220);
     State=2;
-    delay(Delay);
+    
+  }
+  else if (State==1){
+    Adelante(80, 110);
+    //delay(20);
+    }
+  else if (State==2){
+    Adelante(110, 70);
+    //delay(20);
+
   }
   else {
-    if (v3 < Linea || State == 0){
-      Adelante(255, 255);
-      State = 0;
-    } 
-    
-    else if (State==1){
-      Adelante(255, 20);
-      
-    }
-    else if (State==2){
-      Adelante(20, 255);
-    }
+    Adelante(150, 150);
+  
   }
 
 }
@@ -124,6 +127,12 @@ void Adelante(int SpeedA, int SpeedB){
 void Atras(int SpeedA, int SpeedB){
   analogWrite(motorA1, Low);
   analogWrite(motorA2, SpeedA);
+  analogWrite(motorB1, SpeedB);
+  analogWrite(motorB2, Low);
+}
+void Atras2(int SpeedA, int SpeedB){
+  analogWrite(motorA1, SpeedA);
+  analogWrite(motorA2, Low);
   analogWrite(motorB1, Low);
   analogWrite(motorB2, SpeedB);
 }

@@ -6,13 +6,13 @@
 // bibliotecas para la conexión por bluetooth
 #include <SoftwareSerial.h> 
 #include <Servo.h>
-SoftwareSerial bluetooth(2,3); // RX, TX 
+SoftwareSerial bluetooth(11,12); // RX, TX 
 
 // ======================== MOTORES ========================
-int motorR1  = 11;  // Pin Motor Derecha Adelante
+int motorR1  = 9;  // Pin Motor Derecha Adelante
 int motorR2  = 10;  // Pin Motor Derecha Atras
-int motorL1  = 5;   // Pin Motor Izquierda Adelante
-int motorL2  = 6;   // Pin Motor Izquierda Atras
+int motorL1  = 6;   // Pin Motor Izquierda Adelante
+int motorL2  = 5;   // Pin Motor Izquierda Atras
 
 char dato;
 

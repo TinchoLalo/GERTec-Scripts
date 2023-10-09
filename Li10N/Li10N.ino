@@ -54,7 +54,7 @@ void loop() {
     char dato = bluetooth.read();
 
     // llamamos a la función correspondiete de acuerdo al botón que presionemos
-    if (dato == 'F'){ // comprobamos el valor del dato
+    if (dato == 'F') {// comprobamos el valor del dato
       AdelanteA(); // si el valor es igual a 'F' vamos hacia adelante mientras el boton se precione
     }
     else if (dato == 'B') {
@@ -171,9 +171,9 @@ void Right(){
   //Serial.println("Adelante");
   analogWrite(motorA1, 255);
   analogWrite(motorA2, Speed); 
-  analogWrite(motorB1, 200); 
+  analogWrite(motorB1, 180); 
   analogWrite(motorB2, Speed); 
-  analogWrite(motorC1, 200);
+  analogWrite(motorC1, 180);
   analogWrite(motorC2, Speed); 
 }
 void Left(){
@@ -181,9 +181,9 @@ void Left(){
   analogWrite(motorA1, Speed);
   analogWrite(motorA2, 255); 
   analogWrite(motorB1, Speed); 
-  analogWrite(motorB2, 200); 
+  analogWrite(motorB2, 180); 
   analogWrite(motorC1, Speed);
-  analogWrite(motorC2, 200); 
+  analogWrite(motorC2, 180); 
 }
 
 void Rotar1(){

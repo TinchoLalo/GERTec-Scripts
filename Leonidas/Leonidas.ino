@@ -10,26 +10,28 @@
 
 boolean Test = false;      // Indica el modo pruebas del código
 boolean Lucha   = !Test;   // Indica si el sumo ha sido activado para competir
-boolean TestMotor = true; 
+boolean TestMotor = false; 
 boolean TestIR = false;      // Indica el modo pruebas del código
 boolean linea   = false;
 
 //========================== REFERENCIAS ========================== 
-int ref = 850; // 930
+int ref = 25; // 930
 int senState = 0; 
 int low = 100;
 
 // ========================== SENSORES SIGUE LINEAS  ==========================
-int sensorLinea  = 0;
-int valorLinea   = 0;
+int sensorLinea1  = A1;
+int sensorLinea2  = A2;
+int valorLinea1   = 0;
+int valorLinea2   = 0;
 int valor0 = 0; 
 
 
 // ========================== MOTORES ==========================================
 int motorR1        = 10;  // Pin Motor Derecha Adelante
 int motorR2        = 11;   // Pin Motor Derecha Atras
-int motorL1        = 5;   // Pin Motor Izquierda Adelante
-int motorL2        = 6;   // Pin Motor Izquierda Atras
+int motorL1        = 6;   // Pin Motor Izquierda Adelante
+int motorL2        = 5;   // Pin Motor Izquierda Atras
 
 int R1 = 0;
 int R2 = 0;
@@ -37,13 +39,13 @@ int L1 = 0;
 int L2 = 0;
 
 // ========================== LEDS INDICADORES ==================================
-int ledR       = 8;  
+int ledR       = 9;  
 int ledG       = 7;  
-int ledB       = 9;  
+int ledB       = 8;  
 
 //===================== ULTRASONICO ======================
 int disp = 3;
-int eco = 2;
+int eco = 4;
 long tPulso;
 
 //  ========================= CONTROL REMOTO =========================//
@@ -55,7 +57,7 @@ int receptorIR = 12;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Weber Bot iniciando..."); //
+  Serial.println("LEONIDAS iniciando..."); //
   IrReceiver.begin(receptorIR, ledB);
  
 
@@ -87,26 +89,26 @@ void setup() {
 
 //========================= UPDATE =========================//
 void loop(){
-
   if(Lucha) {
     //Serial.println("<<< MODO LUCHA >>>");
     
     if (IrReceiver.decode()) { 
-      IrReceiver.printIRResultShort(&Serial); // Print complete received data in one line
-      IrReceiver.printIRSendUsage(&Serial);   // Print the statement required to send this data
+      auto myRawdata= IrReceiver.decodedIRData.decodedRawData;
+      //Serial.println(myRawdata);
+      if (myRawdata == 3125149440) // ON
+      {
 
+        for(int i=0; i<5; i++){
+          digitalWrite(ledR, HIGH); 
+          delay(500);
+          digitalWrite(ledR, LOW);
+          delay(500);    
+        }  
 
-      for(int i=0; i<5; i++){
-        digitalWrite(ledR, HIGH); 
-        delay(500);
-        digitalWrite(ledR, LOW);
-        delay(500);    
-      }  
-
-      lucha(); 
-    
-      IrReceiver.resume();
+        lucha(); 
       
+        IrReceiver.resume();
+      }
     }
     
   }
@@ -123,6 +125,7 @@ void loop(){
   }
 
   else {
+    /*
     if(IrReceiver.decode()) {
       auto myRawdata= IrReceiver.decodedIRData.decodedRawData;
       // Adelante
@@ -168,8 +171,10 @@ void loop(){
       delay(300);
       IrReceiver.resume();
     
+  }*/
+  Serial.println("Nada");
   }
-  }
+  
 }
 
 
@@ -178,10 +183,11 @@ void loop(){
 //===========================  MODO LUCHA ===========================
 
 void lucha(){do {
-  valorLinea = analogRead(sensorLinea);  
-
+  valorLinea1 = analogRead(sensorLinea1); 
+  valorLinea2 = analogRead(sensorLinea2); 
   // *************** Linea Blanca ***************
-  if (valorLinea < ref){ 
+  if (valorLinea1 < ref || valorLinea2 < ref){ 
+    //Serial.println("Linea!");
     // Leds
     digitalWrite(ledR, HIGH);
     digitalWrite(ledG, LOW);
@@ -191,23 +197,15 @@ void lucha(){do {
     R2= 0; 
     L1= 0;
     L2= 0;
-
     analogWrite(motorR1, 0);
-    analogWrite(motorR2, 255);
+    analogWrite(motorR2, 150);
     analogWrite(motorL1, 0);
-    analogWrite(motorL2, 140);
-    delay(450);
-    analogWrite(motorR1, 255);
-    analogWrite(motorR2, 0);
-    analogWrite(motorL1, 0);
-    analogWrite(motorL2, 255);
-    delay(220);
-
-
+    analogWrite(motorL2, 120);
+    delay(30);
   }
-
   // ************** Pista **************
-  else if(valorLinea > ref){ 
+  else if(valorLinea1 > ref && valorLinea2 > ref){ 
+    //Serial.println("Pista!");
     digitalWrite(disp, LOW);
     //delayMicroseconds(25);
     digitalWrite(disp, HIGH);
@@ -215,14 +213,13 @@ void lucha(){do {
     digitalWrite(disp, LOW);
     tPulso = pulseIn(eco, HIGH);
     //Serial.println(tPulso);
-
     digitalWrite(ledG, HIGH);
     digitalWrite(ledB, LOW);
     digitalWrite(ledR, LOW);
 
     // ************** Detectar Enemigo Cerca **************
     if(tPulso <= 500){
-      //Serial.println("Detecta!");
+      //Serial.println("Detecta Cerca!");
       R1=255; 
       R2=0; 
       L1=255;
@@ -233,10 +230,10 @@ void lucha(){do {
 
     // ************** Detectar Enemigo Media **************
     else if(tPulso > 500 && tPulso <= 1200){
-      //Serial.println("Detecta!");
-      R1=150; 
+      //Serial.println("Detecta Media!");
+      R1=140; 
       R2=0; 
-      L1=150;
+      L1=140;
       L2=0;
       digitalWrite(ledB, HIGH);
       digitalWrite(ledG, LOW);
@@ -244,28 +241,27 @@ void lucha(){do {
 
     // ************** Detectar Enemigo Lejos **************
     else if(tPulso > 1200 && tPulso < 1400){
-      //Serial.println("Detecta!");
-      R1=100; 
+      //Serial.println("Detecta Lejos!");
+      R1=90; 
       R2=0; 
-      L1=100;
+      L1=90;
       L2=0;
       digitalWrite(ledB, HIGH);
       digitalWrite(ledG, LOW);
       senState = 1;
     }   
     else if (senState == 1){
-      R1=140; 
+      R1=110; 
       R2=0; 
-      L1=140;
+      L1=110;
       L2=0;
     }
-    
     // ************** Buscar **************
     else {
-      L1= 200;
-      L2= 100;
-      R1= 120;
-      R2= 100;
+      L1= 120;
+      L2= 20;
+      R1= 80;
+      R2= 20;
       digitalWrite(ledG, HIGH);
       digitalWrite(ledB, LOW);
       digitalWrite(ledR, LOW);
@@ -274,11 +270,12 @@ void lucha(){do {
   }
   else{
     // Buscar
-    L1= 200;
-    L2= 100;
-    R1= 120;
-    R2= 100;
+    L1= 120;
+    L2= 20;
+    R1= 80;
+    R2= 20;
     senState = 0;
+    
   }
   
   //concluimos
@@ -290,7 +287,6 @@ void lucha(){do {
   
 } while(true);
 }
-
 
 
 //===========================  MODO TEST MOTOR ===========================
@@ -306,22 +302,17 @@ void testMotor(){
   analogWrite(motorL2, 255);
   delay(3000);
 }
+
 //===========================  MODO TEST IR remote ===========================
 void testIRremote(){
   if(IrReceiver.decode()) {
     // Print complete received data in one line
     auto myRawdata= IrReceiver.decodedIRData.decodedRawData;
     Serial.println(myRawdata);
-    if (myRawdata == 3141861120)
-    {
-      Serial.println("Hola");
-      digitalWrite(ledR, HIGH); 
-    }
-    else {digitalWrite(ledR, LOW); }
     IrReceiver.resume();
-    
   }
 }
+
 //===========================  MODO TEST ===========================
 void test() {
   digitalWrite(disp, LOW);
@@ -331,12 +322,15 @@ void test() {
   digitalWrite(disp, LOW);
   
   tPulso = pulseIn(eco, HIGH);
-  valorLinea = analogRead(sensorLinea);
+  valorLinea1 = analogRead(sensorLinea1);
+  valorLinea2 = analogRead(sensorLinea2);
 
   Serial.print(" IR ");
   Serial.print(" Pulso ");
   Serial.print(tPulso);
-  Serial.print(" - Linea ");
-  Serial.println(valorLinea);
-
+  Serial.print(" - Linea1 ");
+  Serial.print(valorLinea1);
+  Serial.print(" - Linea2 ");
+  Serial.println(valorLinea2);
+  delay(200);
 }
