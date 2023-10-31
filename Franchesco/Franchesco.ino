@@ -112,7 +112,7 @@ void PrintValue(){
     Serial.print(" - ");
   }
   Serial.print("\n");
-  delay(10);
+  delay(500);
 }
 
 

@@ -15,7 +15,7 @@ boolean TestIR = false;      // Indica el modo pruebas del código
 boolean linea   = false;
 
 //========================== REFERENCIAS ========================== 
-int ref = 25; // 930
+int ref = 180; // 930
 int senState = 0; 
 int low = 100;
 
@@ -95,8 +95,8 @@ void loop(){
     if (IrReceiver.decode()) { 
       auto myRawdata= IrReceiver.decodedIRData.decodedRawData;
       //Serial.println(myRawdata);
-      if (myRawdata == 3125149440) // ON
-      {
+      //if (myRawdata == 3125149440) // ON
+      
 
         for(int i=0; i<5; i++){
           digitalWrite(ledR, HIGH); 
@@ -108,7 +108,7 @@ void loop(){
         lucha(); 
       
         IrReceiver.resume();
-      }
+      
     }
     
   }
@@ -125,53 +125,6 @@ void loop(){
   }
 
   else {
-    /*
-    if(IrReceiver.decode()) {
-      auto myRawdata= IrReceiver.decodedIRData.decodedRawData;
-      // Adelante
-      if (myRawdata == 3208707840)
-      {
-        R1= 255; 
-        R2= 0; 
-        L1= 255;
-        L2= 0;
-      }
-      // Atras
-      else if (myRawdata == 3860463360){
-        R1= 0; 
-        R2= 255; 
-        L1= 0;
-        L2= 255;
-      }
-      // Left
-      else if (myRawdata == 4161273600){
-        R1= 100; 
-        R2= 0; 
-        L1= 255;
-        L2= 0;
-      }
-      // Right
-      else if (myRawdata == 4127850240){
-        R1= 255; 
-        R2= 0; 
-        L1= 100;
-        L2= 0;
-      }
-
-      else {
-        R1= 0; 
-        R2= 0; 
-        L1= 0;
-        L2= 0;
-      }
-      analogWrite(motorR1, R1);
-      analogWrite(motorR2, R2);
-      analogWrite(motorL1, L1);
-      analogWrite(motorL2, L2);
-      delay(300);
-      IrReceiver.resume();
-    
-  }*/
   Serial.println("Nada");
   }
   
@@ -186,7 +139,7 @@ void lucha(){do {
   valorLinea1 = analogRead(sensorLinea1); 
   valorLinea2 = analogRead(sensorLinea2); 
   // *************** Linea Blanca ***************
-  if (valorLinea1 < ref || valorLinea2 < ref){ 
+  if (valorLinea1 > ref || valorLinea2 > ref){ 
     //Serial.println("Linea!");
     // Leds
     digitalWrite(ledR, HIGH);
@@ -198,13 +151,18 @@ void lucha(){do {
     L1= 0;
     L2= 0;
     analogWrite(motorR1, 0);
-    analogWrite(motorR2, 150);
+    analogWrite(motorR2, 200);
     analogWrite(motorL1, 0);
-    analogWrite(motorL2, 120);
-    delay(30);
+    analogWrite(motorL2, 200);
+    delay(500);
+    analogWrite(motorR1, 50);
+    analogWrite(motorR2, 0);
+    analogWrite(motorL1, 0);
+    analogWrite(motorL2, 100);
+    delay(200);
   }
   // ************** Pista **************
-  else if(valorLinea1 > ref && valorLinea2 > ref){ 
+  else if(valorLinea1 < ref && valorLinea2 < ref){ 
     //Serial.println("Pista!");
     digitalWrite(disp, LOW);
     //delayMicroseconds(25);
@@ -220,9 +178,9 @@ void lucha(){do {
     // ************** Detectar Enemigo Cerca **************
     if(tPulso <= 500){
       //Serial.println("Detecta Cerca!");
-      R1=255; 
+      R1=205; 
       R2=0; 
-      L1=255;
+      L1=205;
       L2=0;
       digitalWrite(ledB, HIGH);
       digitalWrite(ledG, LOW);
@@ -231,9 +189,9 @@ void lucha(){do {
     // ************** Detectar Enemigo Media **************
     else if(tPulso > 500 && tPulso <= 1200){
       //Serial.println("Detecta Media!");
-      R1=140; 
+      R1=120; 
       R2=0; 
-      L1=140;
+      L1=120;
       L2=0;
       digitalWrite(ledB, HIGH);
       digitalWrite(ledG, LOW);
@@ -242,9 +200,9 @@ void lucha(){do {
     // ************** Detectar Enemigo Lejos **************
     else if(tPulso > 1200 && tPulso < 1400){
       //Serial.println("Detecta Lejos!");
-      R1=90; 
+      R1=80; 
       R2=0; 
-      L1=90;
+      L1=80;
       L2=0;
       digitalWrite(ledB, HIGH);
       digitalWrite(ledG, LOW);
@@ -258,10 +216,10 @@ void lucha(){do {
     }
     // ************** Buscar **************
     else {
-      L1= 120;
-      L2= 20;
-      R1= 80;
-      R2= 20;
+      L1= 90;
+      L2= 0;
+      R1= 40;
+      R2= 0;
       digitalWrite(ledG, HIGH);
       digitalWrite(ledB, LOW);
       digitalWrite(ledR, LOW);
@@ -270,10 +228,10 @@ void lucha(){do {
   }
   else{
     // Buscar
-    L1= 120;
-    L2= 20;
-    R1= 80;
-    R2= 20;
+    L1= 90;
+    L2= 0;
+    R1= 30;
+    R2= 0;
     senState = 0;
     
   }
@@ -283,6 +241,7 @@ void lucha(){do {
   analogWrite(motorR2, R2);
   analogWrite(motorL1, L1);
   analogWrite(motorL2, L2);
+  
   //delay(500);
   
 } while(true);
