@@ -47,46 +47,46 @@ void loop() {
   }
   // Central
   else if (v3 > Linea && State == 0) {
-    Adelante(90, 90);
+    Adelante(255, 255);
     //delay(Delay);
   }
   // Laterales
     else if (v2 > Linea) {
-    Adelante(110, 80);
+    Adelante(130, 100);
     State=1;
     //delay(Delay);
   }
   else if (v4 > Linea){
-    Adelante(80, 110);
+    Adelante(100, 130);
     State=2;
     //delay(Delay);
   }
   // Puntas
   else if (v1 > Linea){
-    Atras2(110, 80);
+    Atras2(145, 95);
     //delay(50);
     //Adelante(220, 100);
-    State=1;
-    
+    State=1;  
   }
   else if (v5 > Linea){
-    Atras(110, 80);
+    Atras(145, 95);
     //delay(50);
     //Adelante(100, 220);
     State=2;
     
   }
+  
   else if (State==1){
-    Adelante(80, 110);
+    Adelante(100, 130);
     //delay(20);
-    }
+  }
   else if (State==2){
-    Adelante(110, 70);
+    //Adelante(130, 100);
     //delay(20);
 
   }
   else {
-    Adelante(150, 150);
+    Adelante(255, 255);
   
   }
 
@@ -126,8 +126,8 @@ void Adelante(int SpeedA, int SpeedB){
 
 void Atras(int SpeedA, int SpeedB){
   analogWrite(motorA1, Low);
-  analogWrite(motorA2, SpeedA);
-  analogWrite(motorB1, SpeedB);
+  analogWrite(motorA2, SpeedB);
+  analogWrite(motorB1, SpeedA);
   analogWrite(motorB2, Low);
 }
 void Atras2(int SpeedA, int SpeedB){

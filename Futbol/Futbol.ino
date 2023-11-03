@@ -50,24 +50,24 @@ void loop() {
       Atras();
     }
     else if (dato == 'R') {
-      Derecha();
+      Izquierda();
     }
     else if (dato == 'L') {
-      Izquierda();
+      Derecha();
     }
 
     // Combinaciones de teclas
     else if (dato == 'I') {
-      AdelanteR();
-    }
-    else if (dato == 'G') {
       AdelanteL();
     }
+    else if (dato == 'G') {
+      AdelanteR();
+    }
     else if (dato == 'J') {
-      AtrasR();
+      AtrasL();
     }
     else if (dato == 'H') {
-      AtrasL();
+      AtrasR();
     }
 
 
