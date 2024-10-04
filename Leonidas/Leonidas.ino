@@ -10,7 +10,7 @@
 
 boolean Test = false;      // Indica el modo pruebas del código
 boolean Lucha   = !Test;   // Indica si el sumo ha sido activado para competir
-boolean TestMotor = false; 
+boolean TestMotor = true; 
 boolean TestIR = false;      // Indica el modo pruebas del código
 boolean linea   = false;
 
@@ -28,9 +28,9 @@ int valor0 = 0;
 
 
 // ========================== MOTORES ==========================================
-int motorR1        = 10;  // Pin Motor Derecha Adelante
-int motorR2        = 11;   // Pin Motor Derecha Atras
-int motorL1        = 6;   // Pin Motor Izquierda Adelante
+int motorR1        = 2;  // Pin Motor Derecha Adelante
+int motorR2        = 3;   // Pin Motor Derecha Atras
+int motorL1        = 4;   // Pin Motor Izquierda Adelante
 int motorL2        = 5;   // Pin Motor Izquierda Atras
 
 int R1 = 0;
@@ -39,13 +39,13 @@ int L1 = 0;
 int L2 = 0;
 
 // ========================== LEDS INDICADORES ==================================
-int ledR       = 9;  
-int ledG       = 7;  
-int ledB       = 8;  
+int ledR       = A7;  
+int ledG       = A6;  
+int ledB       = A5;  
 
 //===================== ULTRASONICO ======================
-int disp = 4;
-int eco = 3;
+int disp = 6;
+int eco = 7;
 long tPulso;
 
 //  ========================= CONTROL REMOTO =========================//
@@ -90,7 +90,7 @@ void setup() {
 //========================= UPDATE =========================//
 void loop(){
   if(Lucha) {
-    //Serial.println("<<< MODO LUCHA >>>");
+    Serial.println("<<< MODO LUCHA >>>");
     //if (IrReceiver.decode()) { 
       //auto myRawdata = IrReceiver.decodedIRData.decodedRawData;
       //Serial.println(myRawdata);

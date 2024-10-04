@@ -6,16 +6,18 @@
 // bibliotecas para la conexión por bluetooth
 #include <SoftwareSerial.h> 
 #include <Servo.h>
-SoftwareSerial bluetooth(11,12); // RX, TX 
+SoftwareSerial bluetooth(12,11); // RX, TX 11 / 12
 
 // ======================== MOTORES ========================
-int motorR1  = 9;  // Pin Motor Derecha Adelante
-int motorR2  = 10;  // Pin Motor Derecha Atras
-int motorL1  = 6;   // Pin Motor Izquierda Adelante
-int motorL2  = 5;   // Pin Motor Izquierda Atras
+int motorR1  = 6;  // Pin Motor Derecha Adelante
+int motorR2  = 5;  // Pin Motor Derecha Atras
+int motorL1  = 8;   // Pin Motor Izquierda Adelante 
+int motorL2  = 9;   // Pin Motor Izquierda Atras
+
 
 char dato;
 
+// velocidad
 int Speed = 0;
 int ctrlSpeed = 0;
 
@@ -41,7 +43,7 @@ void loop() {
   // comprobamos el estado de bluetooth
   if (bluetooth.available()){ 
     char dato = bluetooth.read();
-
+    Serial.println(dato);
     // llamamos a la función correspondiete de acuerdo al botón que presionemos
     if (dato == 'F'){ // comprobamos el valor del dato
       Adelante(); // si el valor es igual a 'F' vamos hacia adelante mientras el boton se precione
@@ -49,10 +51,10 @@ void loop() {
     else if (dato == 'B') {
       Atras();
     }
-    else if (dato == 'R') {
+    else if (dato == 'L') {
       Izquierda();
     }
-    else if (dato == 'L') {
+    else if (dato == 'R') {
       Derecha();
     }
 
@@ -127,16 +129,6 @@ void loop() {
 }
 
 // ========= FUNCIONES MOVIMIENTOS =========
-void Rotar(){
-  for(int i=0;i<3;i++){
-    Serial.println("Rotar");
-    Derecha();
-    delay(100);
-  } 
-  
-  
-}
-
 void Adelante(){
   //Serial.println("Adelante");
   analogWrite(motorR1, 255); // encendemos el motor derecho adelante
@@ -175,12 +167,12 @@ void AdelanteR(){
   //Serial.println("Adelante Derecha");
   analogWrite(motorR1, 255); // encendemos el motor derecho adelante
   analogWrite(motorR2, ctrlSpeed); // apagamos el motor derecho atras
-  analogWrite(motorL1, 100); // encendemos el motor izquierdo atras lentamente 
+  analogWrite(motorL1, 255); // encendemos el motor izquierdo atras lentamente 
   analogWrite(motorL2, ctrlSpeed); // apagamos el motor izquierdo atras
 }
 void AdelanteL(){
   //Serial.println("Adelante Izquierda");
-  analogWrite(motorR1, 100); 
+  analogWrite(motorR1, 255); 
   analogWrite(motorR2, ctrlSpeed); 
   analogWrite(motorL1, 255); 
   analogWrite(motorL2, ctrlSpeed); 
@@ -190,16 +182,23 @@ void AtrasR(){
   analogWrite(motorR1, ctrlSpeed); 
   analogWrite(motorR2, 255); 
   analogWrite(motorL1, ctrlSpeed); 
-  analogWrite(motorL2, 100); 
+  analogWrite(motorL2, 255); 
 }
 void AtrasL(){
   //Serial.println("Atras Izquierda");
   analogWrite(motorR1, ctrlSpeed); 
-  analogWrite(motorR2, 100); 
+  analogWrite(motorR2, 255); 
   analogWrite(motorL1, ctrlSpeed); 
   analogWrite(motorL2, 255); 
 }
 
+void Rotar(){
+  for(int i=0;i<3;i++){
+    Serial.println("Rotar");
+    Derecha();
+    delay(100);
+  } 
+}
 
 void Parar (){
   digitalWrite(motorR2, LOW);
