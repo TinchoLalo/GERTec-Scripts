@@ -11,7 +11,7 @@
 //========================== MODOS ========================== 
 
 boolean Test    = false;      // Indica el modo pruebas del código
-boolean Lucha   = false;     // Indica si el sumo ha sido activado para competir
+boolean LUCHA   = false;     // Indica si el sumo ha sido activado para competir
 boolean TestMotor = false;
 boolean linea   = false;
 
@@ -120,7 +120,7 @@ void setup() {
 //========================= UPDATE =========================//
 void loop(){
  
-  if(Lucha) {
+  if(LUCHA) {
     Serial.println("<<< MODO LUCHA >>>");
     lucha();
     /* 

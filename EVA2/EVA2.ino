@@ -11,17 +11,15 @@
 
 
 // ========= MODOS ===========
-boolean TEST    = true;      // Indica el modo pruebas del código
+boolean TEST    = false;      // Indica el modo pruebas del código
 boolean LUCHA   = !TEST;     // Indica si el sumo ha sido activado para competir
 
 // ========== MODOS WALKINGS ===========
 boolean SLOW = false;
 boolean TORNADO = false;
 boolean THOUSAND = false;
-boolean SCANR = false;
-boolean SCANL = false;
+boolean SCAN = false;
 boolean MISSILE = false;
-
 
 
 // ========================== SENSORES INFRAROJOS ==========================
@@ -78,8 +76,7 @@ int botonModo    = 2;
 int receptorIR = 2;
 decode_results codigoLeido;
 
-unsigned long previousMillis = 0;
-int step = 0;
+
 
 //========================= START =========================//
 
@@ -122,8 +119,7 @@ void setup() {
   TORNADO = false;
   SLOW = false;
   THOUSAND = false;
-  SCANR = false;
-  SCANL = false;
+  SCAN = false;
   MISSILE = false;
   
 }
@@ -147,7 +143,6 @@ void loop(){
             delay(500);    
           } 
           SLOW = true;
-          lucha();
           break;
         // TORNADO 1
         case 3125149440:
@@ -158,7 +153,6 @@ void loop(){
               delay(500);    
             } 
           TORNADO = true;
-          lucha();
           break;
         // THOUSAND 2
         case 3108437760:
@@ -169,9 +163,8 @@ void loop(){
               delay(500);    
             } 
           THOUSAND = true;
-          lucha();
           break;
-        // SCAN  DERECHO 6
+        // SCAN 3
         case 3091726080:
           for(int i=0; i<5; i++){
               digitalWrite(ledR, HIGH); 
@@ -179,21 +172,9 @@ void loop(){
               digitalWrite(ledR, LOW);
               delay(500);    
             } 
-          SCANR = true;
-          lucha();
+          SCAN = true;
           break;
-        // SCAN IZQUIERDO 4
-        case 3091726080:
-          for(int i=0; i<5; i++){
-              digitalWrite(ledR, HIGH); 
-              delay(500);
-              digitalWrite(ledR, LOW);
-              delay(500);    
-            } 
-          SCANL = true;
-          lucha();
-          break;
-        // MISSILE DERECHO 7
+        // MISSILE 4
         case 3141861120:
           for(int i=0; i<5; i++){
               digitalWrite(ledR, HIGH); 
@@ -202,29 +183,16 @@ void loop(){
               delay(500);    
             } 
           MISSILE = true;
-          motores(-200,200);
-          delay(100);
-          lucha();
-          break;
-        // MISSILE  IZQUIERDO 9
-        case 3158572800:
-          for(int i=0; i<5; i++){
-              digitalWrite(ledR, HIGH); 
-              delay(500);
-              digitalWrite(ledR, LOW);
-              delay(500);    
-            } 
-          MISSILE = true;
-          motores(200,-200);
-          delay(100);
-          lucha();
           break;
 
       IrReceiver.resume();
       }
 
-      
+      lucha();
     }
+  }
+  else {
+    
   }
 }
 
@@ -282,59 +250,19 @@ void thousand(){ // 2
   onLedG();
 }
 
-void scanR() { // 6
-  unsigned long currentMillis = millis();
-  switch (step) {
-    case 0:
-      motores(100, -100);  // Comienza el primer movimiento
-      previousMillis = currentMillis;
-      step++;
-      break;
-    case 1:
-      if (currentMillis - previousMillis >= 400) {
-        motores(-100, 100);  // Cambia al segundo movimiento después de 100 ms
-        previousMillis = currentMillis;
-        step++;
-      }
-      break;
-    case 2:
-      if (currentMillis - previousMillis >= 400) {
-        onLedG();  // Enciende el LED verde después del segundo movimiento
-        step = 0;  // Reinicia el proceso o ajusta según lo que necesites
-      }
-      break;
-  }
+void scan(){ // 3
+  motores(150,-150);
+  delay(100);
+  motores(-150,150);
+  delay(100);
+  onLedG();
 }
 
-
-void scanL() { // 4
-  unsigned long currentMillis = millis();
-  switch (step) {
-    case 0:
-      motores(-100, 100);  // Comienza el primer movimiento
-      previousMillis = currentMillis;
-      step++;
-      break;
-    case 1:
-      if (currentMillis - previousMillis >= 400) {
-        motores(100, -100);  // Cambia al segundo movimiento después de 100 ms
-        previousMillis = currentMillis;
-        step++;
-      }
-      break;
-    case 2:
-      if (currentMillis - previousMillis >= 400) {
-        onLedG();  // Enciende el LED verde después del segundo movimiento
-        step = 0;  // Reinicia el proceso o ajusta según lo que necesites
-      }
-      break;
-  }
-}
-
-void missile(){ // 7 y 9
+void missile(){ // 4
+  motores(150,-150);
+  delay(50);
   motores(255,255);
 }
-
 
 // ========== LINEAS ==============
 int foot(){

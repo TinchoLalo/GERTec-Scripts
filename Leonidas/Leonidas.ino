@@ -9,7 +9,7 @@
 //========================== MODOS ========================== 
 
 boolean Test = false;      // Indica el modo pruebas del código
-boolean Lucha   = !Test;   // Indica si el sumo ha sido activado para competir
+boolean LUCHA   = !Test;   // Indica si el sumo ha sido activado para competir
 boolean TestMotor = true; 
 boolean TestIR = false;      // Indica el modo pruebas del código
 boolean linea   = false;
@@ -89,7 +89,7 @@ void setup() {
 
 //========================= UPDATE =========================//
 void loop(){
-  if(Lucha) {
+  if(LUCHA) {
     Serial.println("<<< MODO LUCHA >>>");
     //if (IrReceiver.decode()) { 
       //auto myRawdata = IrReceiver.decodedIRData.decodedRawData;
