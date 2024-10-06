@@ -145,7 +145,7 @@ void Atras(){
   analogWrite(motorL2, 255);
 }
 
-void Izquierda(){
+void Derecha(){
   //Serial.println("Izquierda");
   analogWrite(motorR1, Speed);
   analogWrite(motorR2, 255);
@@ -153,7 +153,7 @@ void Izquierda(){
   analogWrite(motorL2, Speed);
 }
 
-void Derecha(){
+void Izquierda(){
   //Serial.println("Derecha");
   analogWrite(motorR1, 255);
   analogWrite(motorR2, Speed);
